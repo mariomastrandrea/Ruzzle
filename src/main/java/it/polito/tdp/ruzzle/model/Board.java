@@ -13,7 +13,8 @@ import javafx.beans.property.StringProperty;
  * @author Fulvio
  *
  */
-public class Board {
+public class Board 
+{
 	private List<Pos> positions;
 	private Map<Pos, StringProperty> cells;
 
@@ -23,13 +24,16 @@ public class Board {
 	 * Crea una nuova scacchiera della dimensione specificata
 	 * @param size
 	 */
-	public Board(int size) {
+	public Board(int size) 
+	{
 		this.size = size;
 
 		//Definisco le "caselle" del gioco (e la forma del piano di gioco)
 		this.positions = new ArrayList<>();
-		for (int row = 0; row < this.size; row++) {
-			for (int col = 0; col < this.size; col++) {
+		for (int row = 0; row < this.size; row++) 
+		{
+			for (int col = 0; col < this.size; col++) 
+			{
 				this.positions.add(new Pos(row, col));
 			}
 		}
@@ -38,7 +42,8 @@ public class Board {
 		this.cells = new HashMap<>();
 
 		//Ogni casella conterrà una String Property, inizialmente vuota, per contenere il proprio carattere  
-		for (Pos p : this.positions) {
+		for (Pos p : this.positions) 
+		{
 			this.cells.put(p, new SimpleStringProperty());
 		}
 	}
@@ -51,7 +56,8 @@ public class Board {
 	 * @param p
 	 * @return
 	 */
-	public StringProperty getCellValueProperty(Pos p) {
+	public StringProperty getCellValueProperty(Pos p) 
+	{
 		return this.cells.get(p) ;
 	}
 
@@ -59,15 +65,18 @@ public class Board {
 	 * Restituisce la lista di oggetti {@link  Pos} che corrispondono alle posizioni lecite sulla scacchiera. Gli elementi sono ordinati per righe.
 	 * @return
 	 */
-	public List<Pos> getPositions() {
+	public List<Pos> getPositions() 
+	{
 		return positions;
 	}
 
 	/**
 	 * Crea una nuova scacchiera generando tutte lettere casuali
 	 */
-	public void reset() {
-		for(Pos p: this.positions) {
+	public void reset() 
+	{
+		for(Pos p: this.positions) 
+		{
 			
 			//TODO: migliorare l'assegnazione secondo la probabiltà di ogni lettetera di essere utilizzata nella lingua italiana
 			int random = (int)(Math.random()*26) ;
@@ -83,16 +92,21 @@ public class Board {
 	 * @param p
 	 * @return
 	 */
-	public List<Pos> getAdjacencies(Pos p) {
+	public List<Pos> getAdjacencies(Pos p) 
+	{
 		List<Pos> result = new ArrayList<>() ;
 		
-		for(int r = -1; r<=1; r++) {
-			for(int c = -1; c<=1; c++) {
+		for(int r = -1; r<=1; r++) 
+		{
+			for(int c = -1; c<=1; c++) 
+			{
 				// tutte le 9 posizioni nell'intorno della cella				
-				if(r!=0 || c!=0) { // escludo la cella stessa (offset 0,0)
+				if(r!=0 || c!=0) 
+				{ // escludo la cella stessa (offset 0,0)
 					Pos adj = new Pos(p.getRow()+r, p.getCol()+c) ;
 					//controllo che gli indici non siano fuori dalla griglia
-					if(positions.contains(adj)) {
+					if(positions.contains(adj)) 
+					{
 						result.add(adj) ;
 					}
 				}

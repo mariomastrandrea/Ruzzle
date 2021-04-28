@@ -162,7 +162,8 @@ public class FXMLController {
 
     }
     
-    public void setModel(Model m) {
+    public void setModel(Model m) 
+    {
     	this.model = m ;
     	
     	this.letters = new HashMap<>() ;
@@ -188,7 +189,8 @@ public class FXMLController {
     	this.letters.put(new Pos(3,3), let33) ;
 
     	//BINDNG: associo ad ogni bottone la StringProperty della relativa cella
-    	for(Pos cell: m.getBoard().getPositions()) {
+    	for(Pos cell: m.getBoard().getPositions()) 
+    	{
     		this.letters.get(cell).textProperty().bind(m.getBoard().getCellValueProperty(cell));
     	}
     	

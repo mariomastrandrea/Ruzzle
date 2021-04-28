@@ -1,0 +1,40 @@
+
+VARI APPROCCI:
+
+//poco efficiente
+1) prendere ciascuna parola, e controllare se è presente nella griglia
+
+2) cercare tutti i possibili percorsi sulla griglia e vedere ad ogni passaggio se una
+	parola esiste; se non esiste, torno indietro e faccio backtracking
+
+	
+	
+Problema (inout):
+	Stringa da riconoscere 'parola'
+	Contenuto della Board
+	Posizione della lettera iniziale
+	
+Soluzione parziale:
+	la parte iniziale della parola, quella che ho già riconosciuto
+	elenco delle posizioni in cui si trovano le lettere già riconosciute
+	
+Soluzione totale:
+	parola completamente riconosciuta
+	elenco delle posizioni in cui si trovano le lettere della parola
+	
+Livello della ricorsione:
+	numero di caratteri già riconosciuti
+	
+Condizioni di terminazione:
+		livello = lunghezza della parola da riconoscere
+		se viene trovata la soluzione -> interrompo la ricerca
+		
+Avvio della ricorsione:
+	livello = 1
+	parto da una posizione che contiene la prima lettera della parola (se tale lettera esiste)
+	
+Strutture dati che servono:
+	Stringa da riconoscere 'parola'
+	livello (intero)
+	List<Pos> 'percorso' corrispondente alla sequenza di caselle
+	

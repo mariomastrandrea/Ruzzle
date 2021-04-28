@@ -6,16 +6,18 @@ import java.sql.SQLException;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-public class DBConnect {
-	private static final String jdbcURL = "jdbc:mysql://localhost/dizionario";
+public class DBConnect 
+{
+	private static final String jdbcURL = "jdbc:mariadb://localhost/dizionario";
 	private static HikariDataSource ds;
 	
-	public static Connection getConnection() {
+	public static Connection getConnection() 
+	{
 		if(ds == null) {
 			HikariConfig config = new HikariConfig();
 			config.setJdbcUrl(jdbcURL);
 			config.setUsername("root");
-			config.setPassword("rootroot");
+			config.setPassword("root");
 			
 			config.addDataSourceProperty("cachePrepStmts", true);
 			config.addDataSourceProperty("prepStmtChacheSize", 250);
