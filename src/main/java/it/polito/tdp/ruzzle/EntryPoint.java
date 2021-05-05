@@ -8,12 +8,12 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 
-public class EntryPoint extends Application {
-
+public class EntryPoint extends Application 
+{
     @Override
     public void start(Stage stage) throws Exception 
     {
-    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Scene.fxml"));
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Scene_Ruzzle.fxml"));
     	Parent root = loader.load();
         Scene scene = new Scene(root);
          
@@ -21,8 +21,9 @@ public class EntryPoint extends Application {
         FXMLController controller = loader.getController();
         controller.setModel(model);
         
-        stage.setTitle("Ruzzle");
+        stage.setTitle("Ex - Ruzzle");
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 
@@ -34,8 +35,8 @@ public class EntryPoint extends Application {
      *
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) 
+    {
         launch(args);
     }
-
 }

@@ -1,121 +1,109 @@
 package it.polito.tdp.ruzzle.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 
 /**
  * Memorizza le lettere presenti nella scacchiera Ruzzle.
- * @author Fulvio
- *
  */
-public class Board 
+public class Board implements Iterable<Cell>
 {
-	private List<Pos> positions;
-	private Map<Pos, StringProperty> cells;
-
+	private List<Cell> cells;
 	private int size;
 
-	/**
-	 * Crea una nuova scacchiera della dimensione specificata
-	 * @param size
-	 */
+	
 	public Board(int size) 
 	{
 		this.size = size;
 
-		//Definisco le "caselle" del gioco (e la forma del piano di gioco)
-		this.positions = new ArrayList<>();
-		for (int row = 0; row < this.size; row++) 
+		//Definisco le "caselle" del gioco (e la forma del piano di gioco), inizialmente vuote
+		this.cells = new ArrayList<>();
+		for(int row = 0; row < this.size; row++) 
 		{
 			for (int col = 0; col < this.size; col++) 
 			{
-				this.positions.add(new Pos(row, col));
+				Cell newCell = new Cell(row, col);
+				this.cells.add(newCell);
 			}
-		}
-
-		//Definisco il contenuto delle caselle
-		this.cells = new HashMap<>();
-
-		//Ogni casella conterrà una String Property, inizialmente vuota, per contenere il proprio carattere  
-		for (Pos p : this.positions) 
-		{
-			this.cells.put(p, new SimpleStringProperty());
 		}
 	}
 	
-	/**
-	 * Fornisce la {@link StringProperty} corrispondente alla {@link Pos} specificata. <p>
-	 * 
-	 * Può essere usata per sapere che lettera è presente
-	 * (es. {@code getCellValueProperty(p).get()}) oppure per fare un binding della proprietà stessa sulla mappa visuale.
-	 * @param p
-	 * @return
-	 */
-	public StringProperty getCellValueProperty(Pos p) 
+	public Cell getCell(int row, int col)
 	{
-		return this.cells.get(p) ;
-	}
-
-	/**
-	 * Restituisce la lista di oggetti {@link  Pos} che corrispondono alle posizioni lecite sulla scacchiera. Gli elementi sono ordinati per righe.
-	 * @return
-	 */
-	public List<Pos> getPositions() 
-	{
-		return positions;
+		if( row < 0 || row > this.size - 1 ||
+			col < 0 || col > this.size - 1)
+			return null;
+		
+		int index = col + size * row;
+		
+		return this.cells.get(index);
 	}
 
 	/**
 	 * Crea una nuova scacchiera generando tutte lettere casuali
+	 * @param charsFrequencies 
 	 */
-	public void reset() 
+	public void resetBoard(List<Double> charsFrequencies) 
 	{
-		for(Pos p: this.positions) 
-		{
+		for(Cell cell : this.cells) 
+		{	
+			//TODO: migliorare l'assegnazione secondo la probabiltà di ogni lettera di essere utilizzata nella lingua italiana
+			double random = (double)(Math.random() * 100.0);
+			char letter = this.getAlphabetChar(random, charsFrequencies);
 			
-			//TODO: migliorare l'assegnazione secondo la probabiltà di ogni lettetera di essere utilizzata nella lingua italiana
-			int random = (int)(Math.random()*26) ;
-			String letter = Character.toString((char)('A'+random)) ;
-			
-			//grazie al "binding" fatto in FXMLController, la "set" modifica direttamente il testo del botone collegato alla posizione corrente
-			this.cells.get(p).set(letter); 
+			//grazie al "binding" fatto in FXMLController, la "set" modifica
+			//direttamente il testo del bottone collegato alla posizione corrente
+			cell.setChar(letter);
 		}
 	}
 	
+	private char getAlphabetChar(double random, List<Double> charsFrequencies)
+	{
+		for(int i=0; i<26; i++)
+		{
+			double d = charsFrequencies.get(i);
+			
+			if(random < d)
+				return (char)('A' + i);
+		}
+
+		return 'Z';
+	}
+	
 	/**
-	 * Data una posizione, restituisce tutte le posizioni adiacenti
-	 * @param p
+	 * Data una posizione, restituisce tutte le posizioni adiacenti ammissibili
+	 * @param cell
 	 * @return
 	 */
-	public List<Pos> getAdjacencies(Pos p) 
+	public List<Cell> getAdjacencies(Cell cell) 
 	{
-		List<Pos> result = new ArrayList<>() ;
+		List<Cell> result = new ArrayList<>();
 		
 		for(int r = -1; r<=1; r++) 
 		{
 			for(int c = -1; c<=1; c++) 
 			{
-				// tutte le 9 posizioni nell'intorno della cella				
-				if(r!=0 || c!=0) 
-				{ // escludo la cella stessa (offset 0,0)
-					Pos adj = new Pos(p.getRow()+r, p.getCol()+c) ;
+				// tutte le 4 posizioni nell'intorno della cella: 1 sopra, 1 sotto, 1 a destra e 1 a sinistra				
+				if(Math.abs(r+c) % 2 != 0) 
+				{ 
+					int newRow = cell.getRow() + r;
+					int newCol = cell.getCol() + c;
+					
+					Cell adjCell = this.getCell(newRow, newCol);
 					//controllo che gli indici non siano fuori dalla griglia
-					if(positions.contains(adj)) 
-					{
-						result.add(adj) ;
-					}
+					if(adjCell != null)
+						result.add(adjCell);
 				}
 			}
 		}
-		
-		return result ;
+
+		return result;
 	}
 
-
-	
+	@Override
+	public Iterator<Cell> iterator()
+	{
+		return this.cells.iterator();
+	}
 }
