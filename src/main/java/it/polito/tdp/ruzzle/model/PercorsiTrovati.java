@@ -7,12 +7,14 @@ public class PercorsiTrovati
 {
 	private Set<List<Cell>> percorsi;
 	private boolean haSenso;
+	private boolean giaTrovata;
 	
 	
-	public PercorsiTrovati(Set<List<Cell>> percorsi, boolean haSenso)
+	public PercorsiTrovati(Set<List<Cell>> percorsi, boolean haSenso, boolean giaTrovata)
 	{
 		this.percorsi = percorsi;
 		this.haSenso = haSenso;
+		this.giaTrovata = giaTrovata;
 	}
 	
 	public Set<List<Cell>> getPercorsi()
@@ -23,5 +25,10 @@ public class PercorsiTrovati
 	public boolean haSenso()
 	{
 		return this.haSenso;
+	}
+	
+	public boolean parolaGiaTrovata()
+	{
+		return this.giaTrovata;
 	}
 }

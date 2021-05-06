@@ -135,6 +135,10 @@ public class FXMLController
     		this.txtResult.setText("Parola non esistente nella scacchiera!");
     		return;
     	}
+    	
+    	for(List<Cell> percorso : percorsi.getPercorsi()) 
+    		for(Cell p : percorso)
+    			this.buttonsByCell.get(p).setDefaultButton(true);
     
     	if(!percorsi.haSenso())
     	{
@@ -142,9 +146,13 @@ public class FXMLController
     		return;
     	}
     	
-    	for(List<Cell> percorso : percorsi.getPercorsi()) 
-    		for(Cell p : percorso)
-    			this.buttonsByCell.get(p).setDefaultButton(true);
+    	if(percorsi.parolaGiaTrovata())
+    	{
+    		this.txtResult.setText("Parola già trovata!");
+    		return;
+    	}
+    	
+    	this.txtResult.setText("Trovata la nuova parola \""+ parola +"\"!");
     }
 
     @FXML
@@ -175,7 +183,7 @@ public class FXMLController
     	
     	this.txtResult.setText(sb.toString());
     }
-
+    
     @FXML 
     void initialize() 
     {

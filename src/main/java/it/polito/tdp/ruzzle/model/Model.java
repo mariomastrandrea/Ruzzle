@@ -15,11 +15,15 @@ public class Model
 {
 	private final int SIZE = 4;	//lato della scacchiera
 	private Board board;
+	private DizionarioDAO dao;
 	private List<String> dizionario; //parole in ordine alfabetico
 	private Set<String> parole;
+	
 	private StringProperty statusText;
 	private List<Double> charsDistribution;
-	private DizionarioDAO dao;
+	
+	private Set<String> paroleGiaTrovate;
+	
 	
 	public Model() 
 	{
@@ -33,6 +37,7 @@ public class Model
 		this.statusText.set(String.format("%d parole lette", this.dizionario.size()));
 		
 		this.charsDistribution = this.getCharsDistribution();
+		this.paroleGiaTrovate = new HashSet<>();
 	}
 	
 	public void reset() 
@@ -71,10 +76,15 @@ public class Model
 					percorsi.add(percorso);
 			}
 		}
+		parola = parola.toLowerCase();
 		
 		boolean haSenso = this.parole.contains(parola);
+		boolean giaTrovata = this.paroleGiaTrovate.contains(parola);
 		
-		return new PercorsiTrovati(percorsi, haSenso);
+		if(haSenso && !giaTrovata)
+			this.paroleGiaTrovate.add(parola);
+		
+		return new PercorsiTrovati(percorsi, haSenso, giaTrovata);
 	}
 
 	//metodo ricorsivo
